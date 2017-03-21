@@ -8,10 +8,19 @@ public class Vector {
     public double magnitudeY;
     public double magnitude;
 
+    /**
+     * Vector with two magnitudes
+     * @param magnitudeX
+     * @param magnitudeY
+     */
     public Vector(double magnitudeX, double magnitudeY) {
         this.magnitudeX = magnitudeX;
         this.magnitudeY = magnitudeY;
         this.magnitude = Math.sqrt(magnitudeX * magnitudeX + magnitudeY * magnitudeY);
+    }
+
+    public Vector normalize() {
+        return this.scalar(1 / this.magnitude);
     }
 
     public Vector add(Vector v) {
@@ -39,4 +48,8 @@ public class Vector {
     public double findThetaToVector(Vector v) {
         return dotProduct(v) / (this.magnitude * v.magnitude);
     };
+
+    public boolean equals(Vector v) {
+        return (this.magnitudeX == v.magnitudeX && this.magnitudeY == v.magnitudeY);
+    }
 }

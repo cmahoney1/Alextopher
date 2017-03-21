@@ -27,7 +27,7 @@ public class Exucuter {
                 int angle = in.nextInt(); // angle of your pod
                 int nextCheckPointId = in.nextInt(); // next check point id of your pod
             }
-            /*
+
             for (int i = 0; i < 2; i++) {
                 int x2 = in.nextInt(); // x position of the opponent's pod
                 int y2 = in.nextInt(); // y position of the opponent's pod
@@ -36,7 +36,6 @@ public class Exucuter {
                 int angle2 = in.nextInt(); // angle of the opponent's pod
                 int nextCheckPointId2 = in.nextInt(); // next check point id of the opponent's pod
             }
-            */
             // Write an action using System.out.println()
             // To debug: System.err.println("Debug messages...");
 

@@ -1,20 +1,20 @@
 package Codingame.Simulate;
 
-import Codingame.Game.Game;
+import Codingame.Util;
 
 /**
  * Created by Owner on 2/18/2017.
  */
 public class Pod extends Entity {
     public double angle;
-    public boolean shield;
+    public int shield;
     public int timeout;
     public int checked;
 
     public Pod(Vector position, Vector velocity, double angle) {
-        super(position, velocity, 400);
+        super(position, velocity, Util.podRadius);
         this.angle = angle;
-        this.shield = false;
+        this.shield = 0;
         this.timeout = 100;
         this.checked = 0;
     }
@@ -75,7 +75,7 @@ public class Pod extends Entity {
     }
 
     public void boost(int thrust) {
-        if(this.shield) {
+        if(this.shield > 0) {
             return;
         }
 
@@ -100,7 +100,60 @@ public class Pod extends Entity {
         this.end();
     }
 
-    public double bounceWithCheckpoint(Entity e) {
+    /**
+     * Calculates time to collision if there is a collision
+     * @param e
+     * @return
+     */
+    public Collision collision(Entity e) {
+        //Entities going to same speed will never collide
+        if(!this.velocity.equals(e.velocity)) {
+
+            //If they are close there is already a collision
+            if (this.position.sub(e.position).magnitude < this.radius + e.radius) {
+                return new Collision(this, e, 0);
+            }
+
+            //Make e stationary at 0,0
+            double x = this.position.magnitudeX - e.position.magnitudeX;
+            double y = this.position.magnitudeY - e.position.magnitudeY;
+            double vx = this.velocity.magnitudeX - e.velocity.magnitudeX;
+            double vy = this.velocity.magnitudeY - e.velocity.magnitudeY;
+
+            //Line that represents path
+            Point a = new Point(x, y);
+            Point b = new Point(x + vx, y + vy);
+
+            //E = 0,0
+            Point c = new Point(0, 0);
+
+            Point closestLocation = c.closest(a, b);
+
+            double dist = closestLocation.distance2(c);
+
+            if (dist <= e.radius * e.radius + this.radius * this.radius) {
+                double t = closestLocation.x / b.x;
+
+                //Collision happens soon
+                if(t < 1) {
+                    return new Collision(this, e, t);
+                }
+            }
+        }
+        return null;
+    }
+
+    public Vector targetFromAngle(double angle) {
+        angle += this.angle;
+        double magnitude = 100000;
+        return Util.VectorAngle(angle, magnitude);
+    }
+
+    public void bounceWithCheckpoint(CheckPoint c) {
+
+    }
+
+    public void bounce(Collision c) {
 
     }
 }
